@@ -1,3 +1,8 @@
+/**
+ * Модуль контролерів, що відповідають за керування контактами.
+ * @module controllers/contactsController
+ */
+
 import contactsService from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
 import {
@@ -7,6 +12,15 @@ import {
 } from "../schemas/contactsSchemas.js";
 import mongoose from "mongoose";
 
+/**
+ * Отримати всі контакти.
+ * @function getAllContacts
+ * @param {Object} req - Об'єкт запиту Express.
+ * @param {Object} res - Об'єкт відповіді Express.
+ * @param {Function} next - Функція, яка викликає наступний обробник запиту у цепочці.
+ * @returns {JSON} - JSON-об'єкт, що містить всі контакти.
+ * @throws {HttpError} - Помилка з HTTP-кодом 404, якщо контакти не знайдено.
+ */
 export const getAllContacts = async (req, res, next) => {
   try {
     const result = await contactsService.getAllContacts();
@@ -19,6 +33,15 @@ export const getAllContacts = async (req, res, next) => {
   }
 };
 
+/**
+ * Отримати один контакт за його ідентифікатором.
+ * @function getOneContact
+ * @param {Object} req - Об'єкт запиту Express.
+ * @param {Object} res - Об'єкт відповіді Express.
+ * @param {Function} next - Функція, яка викликає наступний обробник запиту у цепочці.
+ * @returns {JSON} - JSON-об'єкт, що містить знайдений контакт.
+ * @throws {HttpError} - Помилка з HTTP-кодом 404, якщо контакт не знайдено.
+ */
 export const getOneContact = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -39,6 +62,15 @@ export const getOneContact = async (req, res, next) => {
   }
 };
 
+/**
+ * Видалити контакт за його ідентифікатором.
+ * @function deleteContact
+ * @param {Object} req - Об'єкт запиту Express.
+ * @param {Object} res - Об'єкт відповіді Express.
+ * @param {Function} next - Функція, яка викликає наступний обробник запиту у цепочці.
+ * @returns {JSON} - JSON-об'єкт, що містить видалений контакт.
+ * @throws {HttpError} - Помилка з HTTP-кодом 404, якщо контакт не знайдено.
+ */
 export const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -56,6 +88,15 @@ export const deleteContact = async (req, res, next) => {
   }
 };
 
+/**
+ * Створити новий контакт.
+ * @function createContact
+ * @param {Object} req - Об'єкт запиту Express.
+ * @param {Object} res - Об'єкт відповіді Express.
+ * @param {Function} next - Функція, яка викликає наступний обробник запиту у цепочці.
+ * @returns {JSON} - JSON-об'єкт, що містить створений контакт.
+ * @throws {HttpError} - Помилка з HTTP-кодом 400, якщо дані контакта неправильні.
+ */
 export const createContact = async (req, res, next) => {
   try {
     const { error } = createContactSchema.validate(req.body);
@@ -69,6 +110,15 @@ export const createContact = async (req, res, next) => {
   }
 };
 
+/**
+ * Оновити інформацію про контакт.
+ * @function updateContact
+ * @param {Object} req - Об'єкт запиту Express.
+ * @param {Object} res - Об'єкт відповіді Express.
+ * @param {Function} next - Функція, яка викликає наступний обробник запиту у цепочці.
+ * @returns {JSON} - JSON-об'єкт, що містить оновлений контакт.
+ * @throws {HttpError} - Помилка з HTTP-кодом 404, якщо контакт не знайдено, або 400, якщо дані контакта неправильні.
+ */
 export const updateContact = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -90,14 +140,21 @@ export const updateContact = async (req, res, next) => {
       throw new HttpError(404, "Not found");
     }
 
-    delete result.__v;
-
     res.json(result);
   } catch (error) {
     next(error);
   }
 };
 
+/**
+ * Оновити * статус контакту (вибрано чи ні).
+ * @function updateStatusContact
+ * @param {Object} req - Об'єкт запиту Express.
+ * @param {Object} res - Об'єкт відповіді Express.
+ * @param {Function} next - Функція, яка викликає наступний обробник запиту у цепочці.
+ * @returns {JSON} - JSON-об'єкт, що містить оновлений статус контакту.
+ * @throws {HttpError} - Помилка з HTTP-кодом 404, якщо контакт не знайдено, або 400, якщо статус неправильний.
+ */
 export const updateStatusContact = async (req, res, next) => {
   try {
     const { id } = req.params;

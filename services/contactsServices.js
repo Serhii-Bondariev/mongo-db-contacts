@@ -1,15 +1,13 @@
 import Contact from "../models/Contact.js";
 
-const getAllContacts = () => Contact.find().select("-__v");
-const getOneContact = (id) => Contact.findById(id).select("-__v");
+const getAllContacts = () => Contact.find({}, "-createdAt -updatedAt");
+const getOneContact = (id) => Contact.findById(id);
 const createContact = (body) => Contact.create(body);
 const updateContact = (id, body) =>
-  Contact.findByIdAndUpdate(id, body, { select: "-__v" });
+  Contact.findByIdAndUpdate(id, body, { new: true, runValidators: true });
 const deleteContact = (id) => Contact.findOneAndDelete({ _id: id });
 const updateStatusContact = async (id, favorite) => {
-  return Contact.findByIdAndUpdate(id, { favorite }, { new: true }).select(
-    "-__v"
-  );
+  return Contact.findByIdAndUpdate(id, { favorite }, { new: true });
 };
 
 export default {

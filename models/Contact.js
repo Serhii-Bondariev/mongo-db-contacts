@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { handleValidationError, setUpdateSettings } from "./hooks.js";
 
 const contactSchema = new Schema(
   {
@@ -19,6 +20,11 @@ const contactSchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
+contactSchema.post("save", handleValidationError);
+
+contactSchema.pre("findOneAndUpdate", setUpdateSettings);
+
+contactSchema.post("findOneAndUpdate", handleValidationError);
 
 const Contact = model("Contact", contactSchema);
 
